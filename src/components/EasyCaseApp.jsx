@@ -1,0 +1,226 @@
+import React, { useState, useEffect, useRef } from "react";
+import Button from "../ui/Button";
+import Input from "../ui/Input";
+import Card from "../ui/Card";
+import CardContent from "../ui/CardContent";
+import { Menu } from "lucide-react";
+import airplaneImage from "../images/picture.png";
+import banner1 from "../images/banner1.png";
+import banner2 from "../images/banner2.png";
+import banner3 from "../images/banner3.png";
+
+export default function EasyCaseApp() {
+  const [step, setStep] = useState(0);
+  const [reference, setReference] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [adIndex, setAdIndex] = useState(0);
+  const touchStartX = useRef(null);
+
+  const adImages = [banner1, banner2, banner3];
+  const adTexts = [
+    "Missed your flight? We turn that into cash.",
+    "Your delay, our case. Get compensated easily.",
+    "No stress. No fees. Just compensation."
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAdIndex((prev) => (prev + 1) % adImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [adImages.length]);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    if (deltaX > 50) setAdIndex((prev) => (prev - 1 + adImages.length) % adImages.length);
+    else if (deltaX < -50) setAdIndex((prev) => (prev + 1) % adImages.length);
+    touchStartX.current = null;
+  };
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    confirmEmail: "",
+    phone: "",
+    date: "",
+    location: "",
+    ticket: null,
+  });
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    setFormData({
+      ...formData,
+      [name]: files ? files[0] : value,
+    });
+    setErrorMessage("");
+  };
+
+  const validateName = (name) => /^[A-Za-z]{2,20}$/.test(name);
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePhone = (phone) => /^\+972\d{9}$/.test(phone);
+
+  const isStepValid = () => {
+    switch (step) {
+      case 0:
+        if (!validateName(formData.firstName) || !validateName(formData.lastName)) {
+          setErrorMessage("First and last names must be 2-20 letters only (no digits/symbols). Use English letters.");
+          return false;
+        }
+        return true;
+      case 1:
+        if (!validateEmail(formData.email) || !validateEmail(formData.confirmEmail)) {
+          setErrorMessage("Please enter valid emails with correct format (e.g. name@domain.com).");
+          return false;
+        }
+        if (formData.email !== formData.confirmEmail) {
+          setErrorMessage("Emails do not match.");
+          return false;
+        }
+        return true;
+      case 2:
+        if (!validatePhone(formData.phone)) {
+          setErrorMessage("Phone must start with +972 and be followed by 9 digits (e.g. +972501234567).");
+          return false;
+        }
+        return true;
+      case 3:
+        return formData.date.trim() !== "";
+      case 4:
+        return formData.location.trim() !== "";
+      case 5:
+        if (!formData.ticket) {
+          setErrorMessage("Please upload your flight ticket.");
+          return false;
+        }
+        return true;
+      default:
+        return false;
+    }
+  };
+
+  const handleNext = () => {
+    if (isStepValid()) {
+      setStep(step + 1);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (!isStepValid()) return;
+    const refId = "REF" + Math.floor(100000 + Math.random() * 900000);
+    setReference(refId);
+    console.log("Submitted Data:", formData);
+  };
+
+  const steps = [
+    <>
+      <Input name="firstName" placeholder="First Name" onChange={handleChange} />
+      <Input name="lastName" placeholder="Last Name" onChange={handleChange} />
+    </>,
+    <>
+      <Input name="email" placeholder="Email" onChange={handleChange} />
+      <Input name="confirmEmail" placeholder="Confirm Email" onChange={handleChange} />
+    </>,
+    <>
+      <Input name="phone" placeholder="Phone Number (e.g. +972501234567)" onChange={handleChange} />
+    </>,
+    <>
+      <Input name="date" type="date" onChange={handleChange} />
+    </>,
+    <>
+      <Input name="location" placeholder="Where did it happen?" onChange={handleChange} />
+    </>,
+    <>
+      <Input name="ticket" type="file" onChange={handleChange} />
+      <Button onClick={handleSubmit}>Submit</Button>
+    </>,
+  ];
+
+  return (
+    <div className="bg-gradient-to-b from-sky-100 to-white min-h-screen flex flex-col text-center font-sans">
+      <header className="p-4 bg-sky-300 shadow-md flex justify-between items-center sticky top-0 z-50">
+        <div className="text-2xl font-extrabold tracking-tight text-gray-800">easyCase</div>
+        <Button variant="ghost">
+          <Menu />
+        </Button>
+      </header>
+
+      {/* Advertising Section */}
+      <section
+        className="flex flex-col-reverse md:flex-row items-center justify-between px-6 py-12 min-h-screen bg-sky-50"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="w-full md:w-1/2 text-left md:pr-12">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-sky-700 mb-4">{adTexts[adIndex]}</h1>
+          <p className="text-gray-600 text-lg mb-4"></p>
+          <div className="flex gap-2">
+            {adImages.map((_, idx) => (
+              <span
+                key={idx}
+                className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                  idx === adIndex ? "bg-sky-700 scale-125" : "bg-sky-300"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="w-full md:w-1/2 flex justify-center md:justify-end">
+          <img src={adImages[adIndex]} alt="Ad" className="object-cover rounded-xl shadow-md w-full max-w-md h-64 md:h-96 transition-all duration-300" />
+        </div>
+      </section>
+
+      {/* Company Information Section */}
+      <section className="flex flex-col md:flex-row items-center justify-center min-h-[calc(100vh-5rem)] px-6 py-12 bg-sky-100" id="about">
+        <div className="w-full md:w-1/2 flex justify-center md:justify-end">
+          <img
+            src={airplaneImage}
+            alt="Airplane"
+            className="rounded-xl object-cover h-48 w-48 md:h-64 md:w-96"
+          />
+        </div>
+        <div className="w-full md:w-1/2 text-left mt-8 md:mt-0 md:pl-12">
+          <h1 className="text-3xl md:text-4xl font-bold text-sky-700 mb-4">Who are we?</h1>
+          <p className="text-gray-700 text-lg leading-relaxed">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.
+            Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+            Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.
+          </p>
+        </div>
+      </section>
+
+      {/* Eligibility Section */}
+      <section className="p-6 bg-sky-200" id="eligibility">
+        <h2 className="text-2xl font-semibold text-gray-800">Initial Eligibility Check</h2>
+        <Card className="mt-6 max-w-md mx-auto p-4 border border-gray-200">
+          <CardContent className="flex flex-col gap-4">
+            {reference ? (
+              <div>
+                <p className="text-green-600 font-bold text-lg">Reference ID: {reference}</p>
+              </div>
+            ) : (
+              <>
+                {steps[step]}
+                {errorMessage && <p className="text-sm text-red-600 mt-2">{errorMessage}</p>}
+                {step < steps.length - 1 && (
+                  <Button className="mt-3" onClick={handleNext}>Next</Button>
+                )}
+              </>
+            )}
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Status Check Section */}
+      <section className="p-6 bg-sky-300" id="status">
+        <h2 className="text-2xl font-semibold text-gray-800">Status Check</h2>
+        <p className="text-sm text-gray-700">Coming soon...</p>
+      </section>
+    </div>
+  );
+}
