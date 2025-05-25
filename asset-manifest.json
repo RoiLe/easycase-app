@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/easycase-app/static/css/main.eb4a71cc.chunk.css",
+    "main.js": "/easycase-app/static/js/main.4d8908e4.chunk.js",
+    "main.js.map": "/easycase-app/static/js/main.4d8908e4.chunk.js.map",
+    "runtime~main.js": "/easycase-app/static/js/runtime~main.41586f07.js",
+    "runtime~main.js.map": "/easycase-app/static/js/runtime~main.41586f07.js.map",
+    "static/js/2.3f5ab3fc.chunk.js": "/easycase-app/static/js/2.3f5ab3fc.chunk.js",
+    "static/js/2.3f5ab3fc.chunk.js.map": "/easycase-app/static/js/2.3f5ab3fc.chunk.js.map",
+    "index.html": "/easycase-app/index.html",
+    "precache-manifest.b66ac8e5e580847d349ae7ea46d32f87.js": "/easycase-app/precache-manifest.b66ac8e5e580847d349ae7ea46d32f87.js",
+    "service-worker.js": "/easycase-app/service-worker.js",
+    "static/css/main.eb4a71cc.chunk.css.map": "/easycase-app/static/css/main.eb4a71cc.chunk.css.map",
+    "static/media/banner1.png": "/easycase-app/static/media/banner1.19175cd1.png",
+    "static/media/banner2.png": "/easycase-app/static/media/banner2.7c11d8ea.png",
+    "static/media/banner3.png": "/easycase-app/static/media/banner3.7c11d8ea.png",
+    "static/media/picture.png": "/easycase-app/static/media/picture.7c11d8ea.png"
+  }
+}
