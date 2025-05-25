@@ -110,6 +110,7 @@ export default function EasyCaseApp() {
     }
   };
 
+
   const handleSubmit = () => {
     if (!isStepValid()) return;
     const refId = "REF" + Math.floor(100000 + Math.random() * 900000);
@@ -141,86 +142,114 @@ export default function EasyCaseApp() {
     </>,
   ];
 
-  return (
+return (
     <div className="bg-gradient-to-b from-sky-100 to-white min-h-screen flex flex-col text-center font-sans">
-      <header className="p-4 bg-sky-300 shadow-md flex justify-between items-center sticky top-0 z-50">
-        <div className="text-2xl font-extrabold tracking-tight text-gray-800">easyCase</div>
-        <Button variant="ghost">
-          <Menu />
-        </Button>
-      </header>
+        <header className="p-4 bg-sky-300 shadow-md flex justify-between items-center sticky top-0 z-50">
+            <div className="text-2xl font-extrabold tracking-tight text-gray-800">easyCase</div>
+            <Button variant="ghost">
+                <Menu />
+            </Button>
+        </header>
 
-      {/* Advertising Section */}
-      <section
-        className="flex flex-col-reverse md:flex-row items-center justify-between px-6 py-12 min-h-screen bg-sky-50"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        <div className="w-full md:w-1/2 text-left md:pr-12">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-sky-700 mb-4">{adTexts[adIndex]}</h1>
-          <p className="text-gray-600 text-lg mb-4"></p>
-          <div className="flex gap-2">
-            {adImages.map((_, idx) => (
-              <span
-                key={idx}
-                className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                  idx === adIndex ? "bg-sky-700 scale-125" : "bg-sky-300"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="w-full md:w-1/2 flex justify-center md:justify-end">
-          <img src={adImages[adIndex]} alt="Ad" className="object-cover rounded-xl shadow-md w-full max-w-md h-64 md:h-96 transition-all duration-300" />
-        </div>
-      </section>
+        {/* Advertising Section */}
+        <section
+            className="flex flex-col-reverse md:flex-row items-center justify-between px-6 py-12 min-h-screen bg-sky-50"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+        >
+            <div className="w-full md:w-1/2 text-left md:pr-12">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-sky-700 mb-4">{adTexts[adIndex]}</h1>
+                <p className="text-gray-600 text-lg mb-4"></p>
+                <div className="flex gap-2">
+                    {adImages.map((_, idx) => (
+                        <span
+                            key={idx}
+                            className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                                idx === adIndex ? "bg-sky-700 scale-125" : "bg-sky-300"
+                            }`}
+                        />
+                    ))}
+                </div>
+            </div>
+            <div className="w-full md:w-1/2 flex justify-center md:justify-end">
+                <img src={adImages[adIndex]} alt="Ad" className="object-cover rounded-xl shadow-md w-full max-w-md h-64 md:h-96 transition-all duration-300" />
+            </div>
+        </section>
 
-      {/* Company Information Section */}
-      <section className="flex flex-col md:flex-row items-center justify-center min-h-[calc(100vh-5rem)] px-6 py-12 bg-sky-100" id="about">
-        <div className="w-full md:w-1/2 flex justify-center md:justify-end">
-          <img
-            src={airplaneImage}
-            alt="Airplane"
-            className="rounded-xl object-cover h-48 w-48 md:h-64 md:w-96"
-          />
-        </div>
-        <div className="w-full md:w-1/2 text-left mt-8 md:mt-0 md:pl-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-sky-700 mb-4">Who are we?</h1>
-          <p className="text-gray-700 text-lg leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.
-            Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
-            Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.
-          </p>
-        </div>
-      </section>
+        {/* Company Information Section */}
+        <section className="flex flex-col md:flex-row items-center justify-center min-h-[calc(100vh-5rem)] px-6 py-12 bg-sky-100" id="about">
+            <div className="w-full md:w-1/2 flex justify-center md:justify-end">
+                <img
+                    src={airplaneImage}
+                    alt="Airplane"
+                    className="rounded-xl object-cover h-48 w-48 md:h-64 md:w-96"
+                />
+            </div>
+            <div className="w-full md:w-1/2 text-left mt-8 md:mt-0 md:pl-12">
+                <h1 className="text-3xl md:text-4xl font-bold text-sky-700 mb-4">Who are we?</h1>
+                <p className="text-gray-700 text-lg leading-relaxed">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.
+                    Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+                    Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.
+                </p>
+            </div>
+        </section>
 
-      {/* Eligibility Section */}
-      <section className="p-6 bg-sky-200" id="eligibility">
-        <h2 className="text-2xl font-semibold text-gray-800">Initial Eligibility Check</h2>
-        <Card className="mt-6 max-w-md mx-auto p-4 border border-gray-200">
-          <CardContent className="flex flex-col gap-4">
-            {reference ? (
-              <div>
-                <p className="text-green-600 font-bold text-lg">Reference ID: {reference}</p>
-              </div>
-            ) : (
-              <>
-                {steps[step]}
-                {errorMessage && <p className="text-sm text-red-600 mt-2">{errorMessage}</p>}
-                {step < steps.length - 1 && (
-                  <Button className="mt-3" onClick={handleNext}>Next</Button>
-                )}
-              </>
-            )}
-          </CardContent>
-        </Card>
-      </section>
+        {/* Eligibility Section */}
+        <section className="min-h-[80vh] p-6 bg-sky-200 flex items-center justify-center" id="eligibility">
+            <div className="w-full max-w-md">
+                <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Initial Eligibility Check</h2>
+                <Card className="p-4 border border-gray-200">
+                    <CardContent className="flex flex-col gap-4">
+                        {reference ? (
+                            <div>
+                                <p className="text-green-600 font-bold text-lg text-center">Reference ID: {reference}</p>
+                            </div>
+                        ) : (
+                            <>
+                                {React.cloneElement(steps[step], { key: step })}
+                                {errorMessage && <p className="text-sm text-red-600 mt-2">{errorMessage}</p>}
+                                <div className="flex justify-between gap-4 mt-3">
+                                    {step > 0 ? (
+                                        <Button variant="outline" onClick={() => setStep(step - 1)}>Back</Button>
+                                    ) : <span />}
+                                    {step < steps.length - 1 && (
+                                        <Button className="ml-auto" onClick={handleNext}>Next</Button>
+                                    )}
+                                </div>
+                            </>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
+        </section>
 
-      {/* Status Check Section */}
-      <section className="p-6 bg-sky-300" id="status">
-        <h2 className="text-2xl font-semibold text-gray-800">Status Check</h2>
-        <p className="text-sm text-gray-700">Coming soon...</p>
-      </section>
+        {/* Status Check Section */}
+        <section className="p-6 bg-sky-300" id="status">
+            <h2 className="text-2xl font-semibold text-gray-800">Status Check</h2>
+            <p className="text-sm text-gray-700">Coming soon...</p>
+        </section>
+
+        {/* Contact Section */}
+        <section className="p-6 bg-sky-100" id="contact">
+            <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Contact Us</h2>
+            <div className="flex flex-col items-center">
+                <p className="text-gray-700 text-lg mb-4">Have questions? We're here to help!</p>
+                <form className="w-full max-w-md flex flex-col gap-4">
+                    <Input name="contactName" placeholder="Your Name" />
+                    <Input name="contactEmail" placeholder="Your Email" />
+                    <textarea
+                        name="contactMessage"
+                        placeholder="Your Message"
+                        className="border border-gray-300 rounded-md p-2 h-32 resize-none"
+                    />
+                    <Button className="mt-2">Send Message</Button>
+                </form>
+            </div>
+        </section>
     </div>
-  );
+);
+
+
+
 }
