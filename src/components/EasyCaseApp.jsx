@@ -247,6 +247,9 @@ return (
                 </form>
             </div>
         </section>
+        <footer className="p-4 bg-gray-100 text-center text-gray-500 text-sm">
+            © {new Date().getFullYear()} easyCase. All rights reserved.
+        </footer>
     </div>
 );
 
