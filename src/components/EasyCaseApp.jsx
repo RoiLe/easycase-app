@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
@@ -156,8 +157,9 @@ const scrollToSection = (sectionId) => {
 };
 
 return (
+       
         <div className="bg-gradient-to-b from-sky-100 to-white min-h-screen flex flex-col text-center font-sans">
-                <header className="p-4 bg-sky-300 shadow-md flex justify-between items-center sticky top-0 z-50">
+                <header className="p-4 bg-neutral-300 shadow-md flex justify-between items-center sticky top-0 z-50">
                         <div className="text-2xl font-extrabold tracking-tight text-gray-800">easyCase</div>
                         <div className="relative">
                                 <Button variant="ghost" onClick={() => setMenuOpen((prev) => !prev)}>
@@ -228,7 +230,7 @@ return (
                 >
                     <video
                         key={adIndex}
-                        src={adVideos[adIndex]} // Replace adImages with the video paths
+                        src={adVideos[adIndex]} 
                         autoPlay
                         loop
                         muted
@@ -250,7 +252,7 @@ return (
                 </section>
 
                 {/* Company Information Section */}
-                <section className="flex flex-col md:flex-row items-center justify-center min-h-[calc(100vh-5rem)] px-6 py-12 bg-sky-100" id="about">
+                <section className="flex flex-col md:flex-row items-center justify-center min-h-[calc(100vh-5rem)] px-6 py-12 bg-neutral-300" id="about">
                         <div className="w-full md:w-1/2 flex justify-center md:justify-end">
                                 <img
                                         src={airplaneImage}
@@ -269,7 +271,7 @@ return (
                 </section>
 
                 {/* Eligibility Section */}
-                <section className="min-h-[80vh] p-6 bg-sky-200 flex items-center justify-center" id="eligibility">
+                <section className="min-h-[80vh] p-6 bg-neutral-400 flex items-center justify-center" id="eligibility">
                         <div className="w-full max-w-md">
                                 <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Initial Eligibility Check</h2>
                                 <Card className="p-4 border border-gray-200">
@@ -298,13 +300,13 @@ return (
                 </section>
 
                 {/* Status Check Section */}
-                <section className="p-6 bg-sky-300" id="status">
+                <section className="p-6 bg-neutral-500" id="status">
                         <h2 className="text-2xl font-semibold text-gray-800">Status Check</h2>
                         <p className="text-sm text-gray-700">Coming soon...</p>
                 </section>
 
                 {/* Contact Section */}
-                <section className="p-6 bg-sky-100" id="contact">
+                <section className="p-6 bg-neutral-600" id="contact">
                         <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Contact Us</h2>
                         <div className="flex flex-col items-center">
                                 <p className="text-gray-700 text-lg mb-4">Have questions? We're here to help!</p>
