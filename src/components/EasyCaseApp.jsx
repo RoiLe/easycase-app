@@ -12,6 +12,9 @@ import banner3 from "../assets/images/banner3.png";
 import video1 from "../assets/video/video5.mp4";
 import video2 from "../assets/video/video2.mp4";
 import video3 from "../assets/video/video3.mp4";
+import { submitFormData } from '../firebase/firebaseService';
+
+
 
 export default function EasyCaseApp() {
   const [step, setStep] = useState(0);
@@ -116,12 +119,20 @@ export default function EasyCaseApp() {
   };
 
 
-  const handleSubmit = () => {
-    if (!isStepValid()) return;
-    const refId = "REF" + Math.floor(100000 + Math.random() * 900000);
-    setReference(refId);
+ const handleSubmit = async () => {
+  if (!isStepValid()) return;
+  const refId = "REF" + Math.floor(100000 + Math.random() * 900000);
+  setReference(refId);
+  try {
+    await submitFormData(formData, refId);
     console.log("Submitted Data:", formData);
-  };
+  } catch (error) {
+    console.error("Submission failed:", error);
+    setErrorMessage("Submission failed. Please try again.");
+  }
+};
+
+
 
   const steps = [
     <>
