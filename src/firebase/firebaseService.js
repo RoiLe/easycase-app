@@ -1,33 +1,22 @@
-import { collection, addDoc } from "firebase/firestore";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { app, db } from "./firebaseConfig";
+// src/firebase/firebaseService.js
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { app } from "./firebaseConfig";
 
-const storage = getStorage(app);
+const db = getFirestore(app);
 
 export const submitFormData = async (formData, referenceId) => {
   try {
-    let ticketUrl = null;
+    // Clone formData and strip out the File object (ticket)
+    const { ticket, ...cleanFormData } = formData;
 
-    // ✅ Upload file if exists
-    if (formData.ticket) {
-      const storageRef = ref(storage, `tickets/${referenceId}_${formData.ticket.name}`);
-      //await uploadBytes(storageRef, formData.ticket);
-      const uploadTask = uploadBytesResumable(storageRef, formData.ticket);
-      await uploadTask;
-      ticketUrl = await getDownloadURL(storageRef);
-    }
-
-    // ✅ Create Firestore-safe version of data
-    const { ticket, ...cleanData } = formData;
-
-    await addDoc(collection(db, "eligibilitySubmissions"), {
-      ...cleanData,
-      ticket: ticketUrl,
+    const dataToStore = {
+      ...cleanFormData,
       referenceId,
       timestamp: new Date().toISOString(),
-    });
+    };
 
-    console.log("✅ Data saved and file uploaded.");
+    await addDoc(collection(db, "eligibilitySubmissions"), dataToStore);
+    console.log("✅ Data saved to Firestore:", dataToStore);
   } catch (error) {
     console.error("❌ Error saving data to Firestore:", error);
     throw error;
