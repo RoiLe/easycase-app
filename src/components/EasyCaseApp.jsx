@@ -54,24 +54,42 @@ export default function EasyCaseApp() {
     lastName: "",
     email: "",
     confirmEmail: "",
+    countryCode: "+972",      // Default
     phone: "",
     date: "",
     location: "",
     ticket: null,
   });
+ 
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData((prev) => ({ ...prev, [name]: value }));
+};
 
-  const handleChange = (e) => {
+  /*const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData({
       ...formData,
       [name]: files ? files[0] : value,
     });
     setErrorMessage("");
-  };
+  };*/
 
   const validateName = (name) => /^[A-Za-z]{2,20}$/.test(name);
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validatePhone = (phone) => /^\+972\d{9}$/.test(phone);
+  const validatePhone = (code, number) => {
+  const regexMap = {
+    "+972": /^\d{9}$/,     // Israel
+    "+1": /^\d{10}$/,      // USA
+    "+44": /^\d{10}$/,     // UK
+    "+33": /^\d{9}$/,      // France
+    "+49": /^\d{10}$/,     // Germany
+  };
+  const regex = regexMap[code];
+  return regex ? regex.test(number) : false;
+};
+
+  /*const validatePhone = (phone) => /^\+972\d{9}$/.test(phone);*/
 
   const isStepValid = () => {
     switch (step) {
@@ -91,12 +109,20 @@ export default function EasyCaseApp() {
           return false;
         }
         return true;
-      case 2:
+        case 2:
+        if (!validatePhone(formData.countryCode, formData.phoneNumber)) {
+        setErrorMessage(`Phone number is invalid for ${formData.countryCode}`);
+        return false;
+        }
+        return true;
+
+      /*case 2:
         if (!validatePhone(formData.phone)) {
           setErrorMessage("Phone must start with +972 and be followed by 9 digits (e.g. +972501234567).");
           return false;
         }
         return true;
+        */
       case 3:
         return formData.date.trim() !== "";
       case 4:
@@ -144,6 +170,7 @@ export default function EasyCaseApp() {
       <Input name="confirmEmail" placeholder="Confirm Email" onChange={handleChange} />
     </>,
     <>
+    
       <Input name="phone" placeholder="Phone Number (e.g. +972501234567)" onChange={handleChange} />
     </>,
     <>
@@ -240,6 +267,7 @@ return (
                     onTouchEnd={handleTouchEnd}
                 >
                     <video
+                    
                         key={adIndex}
                         src={adVideos[adIndex]} 
                         autoPlay
@@ -292,18 +320,52 @@ return (
                                                                 <p className="text-green-600 font-bold text-lg text-center">Reference ID: {reference}</p>
                                                         </div>
                                                 ) : (
+                                                <>
+                                                        {step === 2 ? (
+                                                        // ✅ Custom phone step (step index 2)
                                                         <>
-                                                                {React.cloneElement(steps[step], { key: step })}
-                                                                {errorMessage && <p className="text-sm text-red-600 mt-2">{errorMessage}</p>}
-                                                                <div className="flex justify-between gap-4 mt-3">
-                                                                        {step > 0 ? (
-                                                                                <Button variant="outline" onClick={() => setStep(step - 1)}>Back</Button>
-                                                                        ) : <span />}
-                                                                        {step < steps.length - 1 && (
-                                                                                <Button className="ml-auto" onClick={handleNext}>Next</Button>
-                                                                        )}
-                                                                </div>
+                                                        <div className="flex gap-2">
+                                                                <select
+                                                                name="countryCode"
+                                                                value={formData.countryCode}
+                                                                onChange={handleChange}
+                                                                className="border p-2 rounded w-1/3"
+                                                                >
+                                                                <option value="+972">+972 IL</option>
+                                                                <option value="+1">+1 USA</option>
+                                                                <option value="+44">+44 UK</option>
+                                                                <option value="+33">+33 FR</option>
+                                                                <option value="+49">+49 GER</option>
+                                                                
+                                                                </select>
+                                                                <Input
+                                                                name="phoneNumber"
+                                                                placeholder="Phone Number"
+                                                                value={formData.phoneNumber}
+                                                                onChange={handleChange}
+                                                                className="w-2/3"
+                                                                /> 
+                                                        </div>
                                                         </>
+                                                        ) : (
+                                                        // ✅ All other steps
+                                                        React.cloneElement(steps[step], { key: step })
+                                                        )}
+
+                                                        {/* ✅ Shared error message and buttons */}
+                                                        {errorMessage && <p className="text-sm text-red-600 mt-2">{errorMessage}</p>}
+
+                                                        <div className="flex justify-between gap-4 mt-3">
+                                                        {step > 0 ? (
+                                                        <Button variant="outline" onClick={() => setStep(step - 1)}>Back</Button>
+                                                        ) : <span />}
+
+                                                        {step < steps.length - 1 && (
+                                                        <Button className="ml-auto" onClick={handleNext}>Next</Button>
+                                                        )}
+                                                        </div>
+                                                </>
+                                                       
                                                 )}
                                         </CardContent>
                                 </Card>

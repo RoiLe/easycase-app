@@ -6,11 +6,13 @@ const db = getFirestore(app);
 
 export const submitFormData = async (formData, referenceId) => {
   try {
-    // Clone formData and strip out the File object (ticket)
-    const { ticket, ...cleanFormData } = formData;
+    const { ticket, countryCode, phoneNumber, ...rest } = formData;
+
+    const fullPhone = `${countryCode}${phoneNumber}`;
 
     const dataToStore = {
-      ...cleanFormData,
+      ...rest,
+      phone: fullPhone,
       referenceId,
       timestamp: new Date().toISOString(),
     };
