@@ -50,30 +50,27 @@ export default function EasyCaseApp() {
   };
 
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    confirmEmail: "",
-    countryCode: "+972",      // Default
-    phone: "",
-    date: "",
-    location: "",
-    ticket: null,
-  });
+  firstName: "",
+  lastName: "",
+  email: "",
+  confirmEmail: "",
+  countryCode: "+972",
+  phoneNumber: "",   // ✅ make sure this matches the input
+  date: "",           // ✅ must exist
+  location: "",
+  ticket: null,
+});
  
 const handleChange = (e) => {
-  const { name, value } = e.target;
-  setFormData((prev) => ({ ...prev, [name]: value }));
+  const { name, value, files } = e.target;
+  setFormData((prev) => ({
+    ...prev,
+    [name]: files ? files[0] : value,
+  }));
+  setErrorMessage("");
 };
 
-  /*const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: files ? files[0] : value,
-    });
-    setErrorMessage("");
-  };*/
+
 
   const validateName = (name) => /^[A-Za-z]{2,20}$/.test(name);
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -91,57 +88,126 @@ const handleChange = (e) => {
 
   /*const validatePhone = (phone) => /^\+972\d{9}$/.test(phone);*/
 
-  const isStepValid = () => {
-    switch (step) {
-      case 0:
-        if (!validateName(formData.firstName) || !validateName(formData.lastName)) {
-          setErrorMessage("First and last names must be 2-20 letters only (no digits/symbols). Use English letters.");
-          return false;
-        }
-        return true;
-      case 1:
-        if (!validateEmail(formData.email) || !validateEmail(formData.confirmEmail)) {
-          setErrorMessage("Please enter valid emails with correct format (e.g. name@domain.com).");
-          return false;
-        }
-        if (formData.email !== formData.confirmEmail) {
-          setErrorMessage("Emails do not match.");
-          return false;
-        }
-        return true;
-        case 2:
-        if (!validatePhone(formData.countryCode, formData.phoneNumber)) {
-        setErrorMessage(`Phone number is invalid for ${formData.countryCode}`);
-        return false;
-        }
-        return true;
+  const questions = [
+  { title: "🛫 Flight Details", questions: [
+    "What was the flight number?",
+    "What was the scheduled date and time of the flight?",
+    "What was the actual date and time of the flight (if it occurred)?",
+    "What was the route of the flight (country, airports)?"
+  ] },
 
-      /*case 2:
-        if (!validatePhone(formData.phone)) {
-          setErrorMessage("Phone must start with +972 and be followed by 9 digits (e.g. +972501234567).");
-          return false;
-        }
-        return true;
-        */
-      case 3:
-        return formData.date.trim() !== "";
-      case 4:
-        return formData.location.trim() !== "";
-      case 5:
-        if (!formData.ticket) {
-          setErrorMessage("Please upload your flight ticket.");
-          return false;
-        }
-        return true;
-      default:
-        return false;
-    }
-  };
+  { title: "🧭 Type of Disruption", questions: [
+    "Was the flight cancelled, delayed, or changed?",
+    "How many hours/days was the delay?",
+    "Were you notified in advance? If so – when and how?",
+    "Did you receive any additional services (hotel, food, phone)?"
+  ] },
+
+  { title: "🎒 Additional Issues", questions: [
+    "Was there any issue with your luggage? (delay, loss, damage)",
+    "Was there a downgrade in the flight conditions compared to what was promised?"
+  ] },
+
+  { title: "💬 Documentation", questions: [
+    "Do you have a flight ticket, check-in confirmation, delay confirmation, photos, messages, or communication with the airline?",
+    "Did you submit an official complaint to the airline? Did you receive a response?"
+  ] },
+
+  { title: "💸 Financial Info", questions: [
+    "Did you incur any expenses or financial losses? How much?",
+    "Did the airline offer any compensation?"
+  ] }
+];
+
+
+        const isStepValid = () => {
+                //console.log("Validating step:", step);
+                if (step === 0) {
+                if (!validateName(formData.firstName) || !validateName(formData.lastName)) {
+                setErrorMessage("First and last names must be 2-20 letters only (English letters only).");
+                return false;
+                }
+                return true;
+                }
+
+                if (step === 1) {
+                if (!validateEmail(formData.email) || !validateEmail(formData.confirmEmail)) {
+                setErrorMessage("Please enter valid emails.");
+                return false;
+                }
+                if (formData.email !== formData.confirmEmail) {
+                setErrorMessage("Emails do not match.");
+                return false;
+                }
+                return true;
+                }
+
+                if (step === 2) {
+                if (!validatePhone(formData.countryCode, formData.phoneNumber)) {
+                setErrorMessage("Phone number is invalid for selected country.");
+                return false;
+                }
+                return true;
+                }
+
+                
+        
+                if (step === 3) {
+                if (!formData.location.trim()) {
+                setErrorMessage("Please enter a location.");
+                return false;
+                }
+                return true;
+                }
+                
+                if (step === 4) {
+                        if (!formData.date.trim()) {
+                        setErrorMessage("Please select a date.");
+                        return false;
+                        }
+                        return true;
+                }
+
+
+                
+
+                // ✅ Dynamic question steps
+                const DYNAMIC_START_INDEX = 5;
+                const questionCount = questions.reduce((acc, section) => acc + section.questions.length, 0);
+                const isDynamicQuestionStep = step >= DYNAMIC_START_INDEX && step < DYNAMIC_START_INDEX + questionCount;
+
+                if (isDynamicQuestionStep) {
+                const dynamicStepIndex = step - DYNAMIC_START_INDEX;
+                const answerKey = Object.keys(formData).filter((k) => k.startsWith("answer_"))[dynamicStepIndex];
+                if (!formData[answerKey] || formData[answerKey].trim() === "") {
+                setErrorMessage("Please answer the question.");
+                return false;
+                }
+                return true;
+                }
+
+                // ✅ Final file upload step
+                if (step === steps.length - 1) {
+                if (!formData.ticket) {
+                setErrorMessage("Please upload your flight ticket.");
+                return false;
+                }
+                return true;
+                }
+
+                return true; // fallback
+        };
+
 
   const handleNext = () => {
-    if (isStepValid()) {
-      setStep(step + 1);
-    }
+        console.log("Current step:", step);
+        console.log("Total steps:", steps.length);
+
+        if (isStepValid()) {
+                console.log("Step is valid, moving to next step");
+                setStep(step + 1);
+                console.log("New step:", step + 1);
+        }
   };
 
 
@@ -161,29 +227,78 @@ const handleChange = (e) => {
 
 
   const steps = [
-    <>
-      <Input name="firstName" placeholder="First Name" onChange={handleChange} />
-      <Input name="lastName" placeholder="Last Name" onChange={handleChange} />
-    </>,
-    <>
-      <Input name="email" placeholder="Email" onChange={handleChange} />
-      <Input name="confirmEmail" placeholder="Confirm Email" onChange={handleChange} />
-    </>,
-    <>
-    
-      <Input name="phone" placeholder="Phone Number (e.g. +972501234567)" onChange={handleChange} />
-    </>,
-    <>
-      <Input name="date" type="date" onChange={handleChange} />
-    </>,
-    <>
-      <Input name="location" placeholder="Where did it happen?" onChange={handleChange} />
-    </>,
-    <>
-      <Input name="ticket" type="file" onChange={handleChange} />
-      <Button onClick={handleSubmit}>Submit</Button>
-    </>,
-  ];
+        // Step 0: Name
+        <div key="name">
+        <Input name="firstName" placeholder="First Name" onChange={handleChange} />
+        <Input name="lastName" placeholder="Last Name" onChange={handleChange} />
+        </div>,
+
+        // Step 1: Email
+        <div key="email">
+        <Input name="email" placeholder="Email" onChange={handleChange} />
+        <Input name="confirmEmail" placeholder="Confirm Email" onChange={handleChange} />
+        </div>,
+
+        // Step 2: Phone input
+        <div key="phone">
+        <div className="flex gap-2">
+        <select
+        name="countryCode"
+        value={formData.countryCode}
+        onChange={handleChange}
+        className="border p-2 rounded w-1/3"
+        >
+        <option value="+972">+972 IL</option>
+        <option value="+1">+1 USA</option>
+        <option value="+44">+44 UK</option>
+        <option value="+33">+33 FR</option>
+        <option value="+49">+49 GER</option>
+        </select>
+        <Input
+        name="phoneNumber"
+        placeholder="Phone Number"
+        value={formData.phoneNumber}
+        onChange={handleChange}
+        className="w-2/3"
+        />
+        </div>
+        </div>,
+
+
+        // Step 3: Location
+        <div key="location">
+        <Input name="location" placeholder="Where did it happen?" onChange={handleChange} />
+        </div>,
+
+         // Step 4: Date
+        <div key="date">
+        <Input name="date" type="date" onChange={handleChange} />
+        </div>,
+
+        
+
+        // Step 5+: Dynamic question steps
+        ...questions.flatMap((section, sectionIndex) =>
+        section.questions.map((q, questionIndex) => (
+        <Card key={`q-${sectionIndex}-${questionIndex}`} className="p-4 border border-gray-300">
+                <CardContent>
+                <p className="mb-2">{q}</p>
+                <Input
+                name={`answer_${sectionIndex}_${questionIndex}`}
+                value={formData[`answer_${sectionIndex}_${questionIndex}`] || ""}
+                onChange={handleChange}
+                />
+                </CardContent>
+        </Card>
+        ))
+        ),
+
+        // Final: file upload + submit
+        <div key="ticket-upload">
+        <Input name="ticket" type="file" onChange={handleChange} />
+        <Button onClick={handleSubmit}>Submit</Button>
+        </div>
+];
 
 const [menuOpen, setMenuOpen] = useState(false);
 
@@ -320,68 +435,41 @@ return (
                         </div>
                 </section>
 
-                {/* Eligibility Section */}
+               {/* Eligibility Section */} 
                 <section className="min-h-[80vh] p-6 bg-neutral-400 flex items-center justify-center" id="eligibility">
-                        <div className="w-full max-w-md">
-                                <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Initial Eligibility Check</h2>
-                                <Card className="p-4 border border-gray-200">
-                                        <CardContent className="flex flex-col gap-4">
-                                                {reference ? (
-                                                        <div>
-                                                                <p className="text-green-600 font-bold text-lg text-center">Reference ID: {reference}</p>
-                                                        </div>
-                                                ) : (
-                                                <>
-                                                        {step === 2 ? (
-                                                        // ✅ Custom phone step (step index 2)
-                                                        <>
-                                                        <div className="flex gap-2">
-                                                                <select
-                                                                name="countryCode"
-                                                                value={formData.countryCode}
-                                                                onChange={handleChange}
-                                                                className="border p-2 rounded w-1/3"
-                                                                >
-                                                                <option value="+972">+972 IL</option>
-                                                                <option value="+1">+1 USA</option>
-                                                                <option value="+44">+44 UK</option>
-                                                                <option value="+33">+33 FR</option>
-                                                                <option value="+49">+49 GER</option>
-                                                                
-                                                                </select>
-                                                                <Input
-                                                                name="phoneNumber"
-                                                                placeholder="Phone Number"
-                                                                value={formData.phoneNumber}
-                                                                onChange={handleChange}
-                                                                className="w-2/3"
-                                                                /> 
-                                                        </div>
-                                                        </>
-                                                        ) : (
-                                                        // ✅ All other steps
-                                                        React.cloneElement(steps[step], { key: step })
-                                                        )}
-
-                                                        {/* ✅ Shared error message and buttons */}
-                                                        {errorMessage && <p className="text-sm text-red-600 mt-2">{errorMessage}</p>}
-
-                                                        <div className="flex justify-between gap-4 mt-3">
-                                                        {step > 0 ? (
-                                                        <Button variant="outline" onClick={() => setStep(step - 1)}>Back</Button>
-                                                        ) : <span />}
-
-                                                        {step < steps.length - 1 && (
-                                                        <Button className="ml-auto" onClick={handleNext}>Next</Button>
-                                                        )}
-                                                        </div>
-                                                </>
-                                                       
-                                                )}
-                                        </CardContent>
-                                </Card>
+                <div className="w-full max-w-md">
+                <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Initial Eligibility Check</h2>
+                <Card className="p-4 border border-gray-200">
+                <CardContent className="flex flex-col gap-4">
+                        {reference ? (
+                        <div>
+                        <p className="text-green-600 font-bold text-lg text-center">Reference ID: {reference}</p>
                         </div>
+                        ) : (
+                        <>
+                       {steps[step]}
+
+                        {/* ✅ Shared error message and buttons */}
+                        {errorMessage && <p className="text-sm text-red-600 mt-2">{errorMessage}</p>}
+
+                        <div className="flex justify-between gap-4 mt-3">
+                        {step > 0 ? (
+                                <Button variant="outline" onClick={() => setStep(step - 1)}>Back</Button>
+                        ) : <span />}
+
+                        {step < steps.length - 1 && (
+                                <Button className="ml-auto" onClick={handleNext}>Next</Button>
+                        )}
+                        </div>
+                        </>
+                        )}
+
+                        
+                </CardContent>
+                </Card>
+                </div>
                 </section>
+
 
                 {/* Status Check Section */}
                 <section className="p-6 bg-neutral-500" id="status">
