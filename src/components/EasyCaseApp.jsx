@@ -262,34 +262,45 @@ return (
 
                 {/* Advertising Section */}
                 <section
-                    className="relative flex flex-col-reverse md:flex-row items-center justify-center px-6 py-12 min-h-screen bg-sky-50"
-                    onTouchStart={handleTouchStart}
-                    onTouchEnd={handleTouchEnd}
+                className="relative flex flex-col-reverse md:flex-row items-center justify-center px-6 py-12 min-h-screen bg-black"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
                 >
-                    <video
-                    
-                        key={adIndex}
-                        src={adVideos[adIndex]} 
+                {/* Fade video container */}
+                <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+                {adVideos.map((src, idx) => (
+                <video
+                        key={idx}
+                        src={src}
                         autoPlay
                         loop
                         muted
-                        className="absolute inset-0 w-full h-full object-cover z-0"
-                    />
-                    <div className="relative z-10 text-center">
-                        <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4">{adTexts[adIndex]}</h1>
-                        <div className="flex gap-2 justify-center">
-                            {adImages.map((_, idx) => (
-                                <span
-                                    key={idx}
-                                    className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                                        idx === adIndex ? "bg-white scale-125" : "bg-gray-300"
-                                    }`}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                </section>
+                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+                        idx === adIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+                        }`}
+                />
+                ))}
+                {/* Dark overlay to smooth transition */}
+                <div className="absolute inset-0 bg-black/20 z-20" />
+                </div>
 
+                {/* Content above video */}
+                <div className="relative z-30 text-center">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
+                {adTexts[adIndex]}
+                </h1>
+                <div className="flex gap-2 justify-center">
+                {adImages.map((_, idx) => (
+                        <span
+                        key={idx}
+                        className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                        idx === adIndex ? "bg-white scale-125" : "bg-gray-500"
+                        }`}
+                        />
+                ))}
+                </div>
+                </div>
+                </section>
                 {/* Company Information Section */}
                 <section className="flex flex-col md:flex-row items-center justify-center min-h-[calc(100vh-5rem)] px-6 py-12 bg-neutral-300" id="about">
                         <div className="w-full md:w-1/2 flex justify-center md:justify-end">
