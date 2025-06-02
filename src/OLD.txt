@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect, useRef } from "react";
-import Button from "../ui/Button";
-import Input from "../ui/Input";
-import Card from "../ui/Card";
-import CardContent from "../ui/CardContent";
+import Button from "./ui/Button";
+import Input from "./ui/Input";
+import Card from "./ui/Card";
+import CardContent from "./ui/CardContent";
 import { Menu } from "lucide-react";
 import airplaneImage from "../assets/images/picture.png";
 import banner1 from "../assets/images/banner1.png";
@@ -12,7 +12,7 @@ import banner3 from "../assets/images/banner3.png";
 import video1 from "../assets/video/video5.mp4";
 import video2 from "../assets/video/video2.mp4";
 import video3 from "../assets/video/video3.mp4";
-import { submitFormData } from '../firebase/firebaseService';
+import { submitFormData } from './firebase/firebaseService';
 
 
 

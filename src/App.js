@@ -1,5 +1,5 @@
 import React from "react";
-import EasyCaseApp from "./components/EasyCaseApp";
+import EasyCaseApp from "./EasyCaseApp";
 
 function App() {
   return <EasyCaseApp />;
