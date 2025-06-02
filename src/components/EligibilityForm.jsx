@@ -77,7 +77,7 @@ export default function EligibilityForm() {
   return (
     <section className="min-h-[80vh] p-6 bg-neutral-400 flex items-center justify-center" id="eligibility">
       <div className="w-full max-w-md">
-        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Initial Eligibility Check</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Eligibility Questionnaire</h2>
         <Card className="p-4 border border-gray-200">
           <CardContent className="flex flex-col gap-4">
             {reference ? (
