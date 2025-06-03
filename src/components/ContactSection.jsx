@@ -4,7 +4,7 @@ import Button from "../ui/Button";
 
 export default function ContactSection() {
   return (
-    <section className="p-6 bg-neutral-600" id="contact">
+    <section className="p-6 bg-neutral-400" id="contact">
       <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Contact Us</h2>
       <div className="flex flex-col items-center">
         <p className="text-gray-700 text-lg mb-4">Have questions? We're here to help!</p>

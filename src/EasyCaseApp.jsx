@@ -54,11 +54,12 @@ export default function EasyCaseApp() {
         © {new Date().getFullYear()} easyCase. All rights reserved.
       </footer>
       {/* Beautiful Floating Button to Eligibility Section */}
+      
       <button
         onClick={() => scrollToSection("eligibility")}
-        className="fixed bottom-6 right-6 bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold px-6 py-3 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-bounce-slow z-50"
+        className="fixed bottom-6 right-6 bg-gradient-to-r white to-blue-600 text-black font-semibold px-6 py-3 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 animate-bounce-slow z-50"
       >
-        Eligibility Questionnaire
+          Questionnaire
       </button>
 
     </div>
