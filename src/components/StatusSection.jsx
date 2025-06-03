@@ -1,5 +1,5 @@
 // src/components/StatusSection.jsx
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Input from "../ui/Input";
 import Card from "../ui/Card";
 import CardContent from "../ui/CardContent";
@@ -17,10 +17,24 @@ const STAGES = [
 export default function StatusSection() {
   const [ref, setRef] = useState("");
   const [status, setStatus] = useState(null);
+  const scrollRef = useRef(null);
+  const cardRefs = useRef([]);
+
+const currentStep = status?.currentStep;
+
+useEffect(() => {
+  if (currentStep != null && cardRefs.current[currentStep]) {
+    const container = scrollRef.current;
+    const card = cardRefs.current[currentStep];
+    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+    const containerCenter = container.offsetWidth / 2;
+    container.scrollTo({ left: cardCenter - containerCenter, behavior: "smooth" });
+  }
+}, [currentStep]);
+
 
   const handleCheckStatus = () => {
-    // Replace this logic with real backend integration
-    setStatus({
+    const newStatus = {
       currentStep: 2, // for example
       comments: [
         "Received questionnaire.",
@@ -31,29 +45,50 @@ export default function StatusSection() {
         "Final judgment pending."
       ],
       durations: ["2 days", "1 day", "3 days", "-", "-", "-"]
-    });
+    };
+    setStatus(newStatus);
+
+    setTimeout(() => {
+      const container = scrollRef.current;
+      if (container && container.children[newStatus.currentStep]) {
+        const card = container.children[newStatus.currentStep];
+        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+        const containerCenter = container.offsetWidth / 2;
+        container.scrollTo({ left: cardCenter - containerCenter, behavior: "smooth" });
+      }
+    }, 100);
   };
 
   return (
     <section className="py-12 px-6 bg-gradient-to-b from-white to-sky-100" id="status">
       <div className="max-w-5xl mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-4 text-gray-800">Track Your Claim Status</h2>
+        <h2 className="text-3xl font-bold mb-4 text-gray-800">
+        <span role="img" aria-label="Bar chart">📊</span> Track Your Claim Status
+        </h2>
 
-        {/* Diagram with steps */}
-        <div className="flex flex-col md:flex-row justify-between gap-6 items-start md:items-stretch my-10">
-          {STAGES.map((stage, idx) => (
-            <Card key={idx} className={`flex-1 ${status?.currentStep === idx ? "border-blue-500 border-2" : ""}`}>
-              <CardContent>
-                <h3 className="text-lg font-semibold mb-2">{stage}</h3>
-                <p className="text-sm text-gray-500 italic mb-2">
-                  Duration: {status?.durations[idx] || "-"}
-                </p>
-                <p className="text-sm text-gray-700">
-                  {status?.comments[idx] || "No updates yet."}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+        {/* Diagram with steps - scroll only on mobile */}
+        <div className="overflow-x-auto md:overflow-x-visible">
+          <div ref={scrollRef} className="flex gap-4 my-10 w-max px-2 md:w-full md:justify-between">
+            {STAGES.map((stage, idx) => (
+              <Card
+                key={idx}
+                ref={(el) => (cardRefs.current[idx] = el)}
+                className={`min-w-[180px] md:min-w-0 flex-1 bg-amber-100 flex-shrink-0 h-full flex flex-col justify-between ${
+                  status?.currentStep === idx ? "border-black border-2" : "border border-gray-300"
+                }`}
+              >
+                <CardContent className="flex flex-col h-full">
+                  <h3 className="text-md font-semibold mb-2">{stage}</h3>
+                  <p className="text-sm text-gray-500 italic mb-2">
+                    Duration: {status?.durations[idx] || "-"}
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    {status?.comments[idx] || "No updates yet."}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
 
         {/* Description */}
@@ -67,13 +102,15 @@ export default function StatusSection() {
 
         {/* Status checker */}
         <div className="bg-white shadow-md p-6 rounded-lg max-w-md mx-auto">
-          <h4 className="text-lg font-semibold mb-3 text-gray-800">Enter Your Reference Number</h4>
-          <div className="flex gap-2 items-center">
+          <h4 className="text-lg font-semibold mb-3 text-gray-800">
+          <span role="img" aria-label="Magnifying glass">🔍</span> Enter Your Reference Number
+          </h4>
+          <div className="flex gap-2 items-center flex-col sm:flex-row">
             <Input
               placeholder="e.g. REF123456"
               value={ref}
               onChange={(e) => setRef(e.target.value)}
-              className="flex-grow"
+              className="flex-grow mb-2 sm:mb-0"
             />
             <Button onClick={handleCheckStatus}>Check</Button>
           </div>
