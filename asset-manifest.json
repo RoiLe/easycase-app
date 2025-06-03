@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/easycase-app/static/css/main.ec64b47a.chunk.css",
-    "main.js": "/easycase-app/static/js/main.710073f9.chunk.js",
-    "main.js.map": "/easycase-app/static/js/main.710073f9.chunk.js.map",
+    "main.js": "/easycase-app/static/js/main.a31cdded.chunk.js",
+    "main.js.map": "/easycase-app/static/js/main.a31cdded.chunk.js.map",
     "runtime~main.js": "/easycase-app/static/js/runtime~main.41586f07.js",
     "runtime~main.js.map": "/easycase-app/static/js/runtime~main.41586f07.js.map",
     "static/js/2.61969278.chunk.js": "/easycase-app/static/js/2.61969278.chunk.js",
     "static/js/2.61969278.chunk.js.map": "/easycase-app/static/js/2.61969278.chunk.js.map",
     "index.html": "/easycase-app/index.html",
-    "precache-manifest.1b508e86c49f3e1d4efb9766c1461cac.js": "/easycase-app/precache-manifest.1b508e86c49f3e1d4efb9766c1461cac.js",
+    "precache-manifest.eddc0c5bb122dc73481c90b43809310c.js": "/easycase-app/precache-manifest.eddc0c5bb122dc73481c90b43809310c.js",
     "service-worker.js": "/easycase-app/service-worker.js",
     "static/css/main.ec64b47a.chunk.css.map": "/easycase-app/static/css/main.ec64b47a.chunk.css.map",
     "static/media/banner1.png": "/easycase-app/static/media/banner1.19175cd1.png",
