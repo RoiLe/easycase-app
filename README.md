@@ -1,73 +1,124 @@
-# easycase-app
-Airline claims company
+# easyCase
 
-# Getting Started with Create React App
+**easyCase** is a web platform designed to streamline the legal process for airline passengers affected by flight disruptions (delays, cancellations, lost luggage, etc.). It provides a convenient, mobile-optimized interface for users to assess their compensation eligibility and track the progress of their case.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+- **About Section** – Company mission and background.
+- **AdBanner** – Promotional section for banners or ads.
+- **Contact** – A contact form integrated with Firebase.
+- **Eligibility Questionnaire** – Multi-step form for eligibility assessment.
+- **Status Check** – Interactive timeline to check claim progress.
+- **Satisfied Customers** *(Planned)* – Future section to display testimonials.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🛠️ Technologies Used
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **React** – Functional components with Hooks.
+- **Tailwind CSS** – Utility-first CSS framework for responsive design.
+- **Firebase** – Used for database storage and form submissions.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📁 Project Structure
 
-### `npm run build`
+easyCase/
+├── public/
+│ └── index.html
+├── src/
+│ ├── components/
+│ │ ├── About.jsx
+│ │ ├── AdBanner.jsx
+│ │ ├── Contact.jsx
+│ │ ├── EligibilityQuestionnaire/
+│ │ │ ├── EligibilityForm.jsx
+│ │ │ ├── questions.js
+│ │ ├── StatusSection/
+│ │ │ └── StatusSection.jsx
+│ │ └── SatisfiedCustomers.jsx (planned)
+│ ├── firebase.js
+│ ├── App.jsx
+│ ├── index.js
+│ ├── index.css
+├── .env.local
+├── package.json
+└── README.md
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## ⚙️ Installation & Local Development
 
-### `npm run eject`
+1. **Clone the Repository**
+   ```bash
+   git clone <REPO_URL> easyCase
+   cd easyCase
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## ⚙️ Installation & Local Development
 
-## Learn More
+1. **Clone the Repository**
+   ```bash
+   git clone <REPO_URL> easyCase
+   cd easyCase
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. **Install Dependencies**
 
-### Code Splitting
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+3. **Add Environment Variables**
 
-### Analyzing the Bundle Size
+Create a .env.local file with the following:
+REACT_APP_FIREBASE_API_KEY=YOUR_API_KEY
+REACT_APP_FIREBASE_AUTH_DOMAIN=YOUR_AUTH_DOMAIN
+REACT_APP_FIREBASE_PROJECT_ID=YOUR_PROJECT_ID
+REACT_APP_FIREBASE_STORAGE_BUCKET=YOUR_BUCKET
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=YOUR_SENDER_ID
+REACT_APP_FIREBASE_APP_ID=YOUR_APP_ID
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+4 **Start the App**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+npm start
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 📦 Deployment
 
-### `npm run build` fails to minify
+Build the App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+npm run build
+Deploy
+
+You can use Firebase Hosting, Netlify, Vercel, or any static hosting service.
+
+For Firebase:
+
+
+firebase login
+firebase init hosting
+firebase deploy
+🔄 Updating Eligibility Questions
+Questions are defined in src/components/EligibilityQuestionnaire/questions.js.
+
+Add, update, or remove questions from the array.
+
+Make sure question keys match those used in the form data.
+
+✅ Environment Variables Example
+
+REACT_APP_FIREBASE_API_KEY=xxx
+REACT_APP_FIREBASE_AUTH_DOMAIN=xxx.firebaseapp.com
+REACT_APP_FIREBASE_PROJECT_ID=xxx
+REACT_APP_FIREBASE_STORAGE_BUCKET=xxx.appspot.com
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=123456789
+REACT_APP_FIREBASE_APP_ID=1:123456789:web:abcdef
