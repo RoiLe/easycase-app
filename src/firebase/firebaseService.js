@@ -14,6 +14,7 @@ export const submitFormData = async (formData, referenceId) => {
       ...rest,
       phone: fullPhone,
       referenceId,
+      status: 0, // Initial status
       timestamp: new Date().toISOString(),
     };
 

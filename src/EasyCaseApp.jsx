@@ -47,8 +47,8 @@ export default function EasyCaseApp() {
       <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} scrollToSection={scrollToSection} />
       <AdBanner adVideos={adVideos} adImages={adImages} adIndex={adIndex} adTexts={adTexts} handleTouchStart={handleTouchStart} handleTouchEnd={handleTouchEnd} />
       <AboutSection />
-      <EligibilityForm />
       <StatusSection />
+      <EligibilityForm />
       <ContactSection />
       <footer className="p-4 bg-gray-100 text-center text-gray-500 text-sm">
         © {new Date().getFullYear()} easyCase. All rights reserved.

@@ -35,6 +35,7 @@ export default function EligibilityForm() {
   const handleNext = () => {
     if (!isStepValid(step, formData, setErrorMessage, questions, steps.length)) return;
     setStep(step + 1);
+    setErrorMessage("");
   };
 
   const handleSubmit = async () => {
@@ -51,7 +52,7 @@ export default function EligibilityForm() {
   };
 
   return (
-    <section className="min-h-[80vh] p-6 bg-neutral-400 flex items-center justify-center" id="eligibility">
+    <section className="min-h-[80vh] p-6 bg-white flex items-center justify-center" id="eligibility">
       <div className="w-full max-w-md">
         <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Eligibility Questionnaire</h2>
 

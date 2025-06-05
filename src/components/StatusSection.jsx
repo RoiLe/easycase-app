@@ -4,14 +4,29 @@ import Input from "../ui/Input";
 import Card from "../ui/Card";
 import CardContent from "../ui/CardContent";
 import Button from "../ui/Button";
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
+import { app } from "../firebase/firebaseConfig"; // adjust path if needed
+
+const db = getFirestore(app);
 
 const STAGES = [
   "Eligibility Questionnaire",
   "Customer Confirmation",
+  "Phone Call",
   "Warning Letter",
-  "Judgment",
-  "Claim Letter (Optional)",
-  "Final Judgment (Optional)"
+  "Court claim decision",
+  "Not necessary: ​​Court appeal",
+  "Not necessary: Final Judgment"
+];
+
+const DURATIONS = [
+  "15 minutes",
+  "5 minutes",
+  "30 minutes",
+  "3-6 days",
+  "30-60 days",
+  "30 days",
+  "60 days"
 ];
 
 export default function StatusSection() {
@@ -20,76 +35,58 @@ export default function StatusSection() {
   const scrollRef = useRef(null);
   const cardRefs = useRef([]);
 
-const currentStep = status?.currentStep;
+  const currentStep = status?.currentStep;
 
-useEffect(() => {
-  if (currentStep != null && cardRefs.current[currentStep]) {
-    const container = scrollRef.current;
-    const card = cardRefs.current[currentStep];
-    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-    const containerCenter = container.offsetWidth / 2;
-    container.scrollTo({ left: cardCenter - containerCenter, behavior: "smooth" });
-  }
-}, [currentStep]);
+  useEffect(() => {
+    if (currentStep != null && cardRefs.current[currentStep]) {
+      requestAnimationFrame(() => {
+        const container = scrollRef.current;
+        const card = cardRefs.current[currentStep];
+        if (container && card) {
+          const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+          const containerCenter = container.offsetWidth / 2;
+          container.scrollTo({
+            left: cardCenter - containerCenter,
+            behavior: "smooth"
+          });
+        }
+      });
+    }
+  }, [currentStep]);
 
+  const handleCheckStatus = async () => {
+    try {
+      const q = query(
+        collection(db, "eligibilitySubmissions"),
+        where("referenceId", "==", ref.trim())
+      );
+      const querySnapshot = await getDocs(q);
 
-  const handleCheckStatus = () => {
-    const newStatus = {
-      currentStep: 2, // for example
-      comments: [
-        "Received questionnaire.",
-        "Awaiting confirmation.",
-        "Warning letter sent.",
-        "Judgment pending.",
-        "Claim letter optional.",
-        "Final judgment pending."
-      ],
-      durations: ["2 days", "1 day", "3 days", "-", "-", "-"]
-    };
-    setStatus(newStatus);
+      if (!querySnapshot.empty) {
+        const docData = querySnapshot.docs[0].data();
+        const currentStep = docData.status ?? 0;
 
-    setTimeout(() => {
-      const container = scrollRef.current;
-      if (container && container.children[newStatus.currentStep]) {
-        const card = container.children[newStatus.currentStep];
-        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-        const containerCenter = container.offsetWidth / 2;
-        container.scrollTo({ left: cardCenter - containerCenter, behavior: "smooth" });
+        const newStatus = {
+          currentStep,
+          comments: Array(STAGES.length).fill("")
+        };
+
+        setStatus(newStatus);
+      } else {
+        alert("Reference ID not found.");
       }
-    }, 100);
+    } catch (error) {
+      console.error("Error fetching status from Firestore:", error);
+      alert("An error occurred while checking status.");
+    }
   };
 
   return (
-    <section className="py-12 px-6 bg-gradient-to-b from-white to-sky-100" id="status">
+    <section className="py-12 px-6 bg-neutral-400 from-white to-sky-100" id="status">
       <div className="max-w-5xl mx-auto text-center">
         <h2 className="text-3xl font-bold mb-4 text-gray-800">
-        <span role="img" aria-label="Bar chart">📊</span> Track Your Claim Status
+          <span role="img" aria-label="Bar chart">📊</span> Track Your Claim Status
         </h2>
-
-        {/* Diagram with steps - scroll only on mobile */}
-        <div className="overflow-x-auto md:overflow-x-visible">
-          <div ref={scrollRef} className="flex gap-4 my-10 w-max px-2 md:w-full md:justify-between">
-            {STAGES.map((stage, idx) => (
-              <Card
-                key={idx}
-                ref={(el) => (cardRefs.current[idx] = el)}
-                className={`min-w-[180px] md:min-w-0 flex-1 bg-amber-100 flex-shrink-0 h-full flex flex-col justify-between ${
-                  status?.currentStep === idx ? "border-black border-2" : "border border-gray-300"
-                }`}
-              >
-                <CardContent className="flex flex-col h-full">
-                  <h3 className="text-md font-semibold mb-2">{stage}</h3>
-                  <p className="text-sm text-gray-500 italic mb-2">
-                    Duration: {status?.durations[idx] || "-"}
-                  </p>
-                  <p className="text-sm text-gray-700">
-                    {status?.comments[idx] || "No updates yet."}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
 
         {/* Description */}
         <div className="mb-10">
@@ -100,10 +97,35 @@ useEffect(() => {
           </p>
         </div>
 
+        {/* Diagram with steps - scroll only on mobile */}
+        <div className="overflow-x-auto md:overflow-x-visible">
+          <div ref={scrollRef} className="flex gap-4 my-10 w-max px-2 md:w-full md:justify-between">
+            {STAGES.map((stage, idx) => (
+              <Card
+                key={idx}
+                ref={(el) => (cardRefs.current[idx] = el)}
+                className={`min-w-[180px] md:min-w-0 flex-1 bg-amber-100 flex-shrink-0 h-full flex flex-col justify-between ${
+                  status?.currentStep === idx ? "border-black border-2 bg-green-100" : "border border-gray-300"
+                }`}
+              >
+                <CardContent className="flex flex-col h-full">
+                  <h3 className="text-md font-semibold mb-2">{stage}</h3>
+                  <p className="text-sm text-gray-500 italic mb-2">
+                    Duration: {DURATIONS[idx]}
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    {status?.comments[idx] || "No updates yet."}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
         {/* Status checker */}
         <div className="bg-white shadow-md p-6 rounded-lg max-w-md mx-auto">
           <h4 className="text-lg font-semibold mb-3 text-gray-800">
-          <span role="img" aria-label="Magnifying glass">🔍</span> Enter Your Reference Number
+            <span role="img" aria-label="Magnifying glass">🔍</span> Enter Your Reference Number
           </h4>
           <div className="flex gap-2 items-center flex-col sm:flex-row">
             <Input
