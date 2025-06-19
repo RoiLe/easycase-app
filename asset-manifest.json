@@ -1,24 +1,22 @@
 {
   "files": {
-    "main.css": "/easycase-app/static/css/main.ec64b47a.chunk.css",
-    "main.js": "/easycase-app/static/js/main.1e996ea9.chunk.js",
-    "main.js.map": "/easycase-app/static/js/main.1e996ea9.chunk.js.map",
-    "runtime~main.js": "/easycase-app/static/js/runtime~main.41586f07.js",
-    "runtime~main.js.map": "/easycase-app/static/js/runtime~main.41586f07.js.map",
-    "static/js/2.32551de2.chunk.js": "/easycase-app/static/js/2.32551de2.chunk.js",
-    "static/js/2.32551de2.chunk.js.map": "/easycase-app/static/js/2.32551de2.chunk.js.map",
+    "main.css": "/easycase-app/static/css/main.ee51817d.css",
+    "main.js": "/easycase-app/static/js/main.db7c2002.js",
+    "static/media/video3.mp4": "/easycase-app/static/media/video3.31122fbf6204be4b89cd.mp4",
+    "static/media/video2.mp4": "/easycase-app/static/media/video2.4fe82ac1d12c8a75302b.mp4",
+    "static/media/video5.mp4": "/easycase-app/static/media/video5.a59cf0bbd7df8351fc8a.mp4",
+    "static/media/portrait2.jpg": "/easycase-app/static/media/portrait2.569066fa430ee49ccbf2.jpg",
+    "static/media/portrait3.jpg": "/easycase-app/static/media/portrait3.5f43727709f097ae75e7.jpg",
+    "static/media/banner1.png": "/easycase-app/static/media/banner1.d951f818b7b7b31d9459.png",
+    "static/media/portrait1.jpg": "/easycase-app/static/media/portrait1.d07d8e3e54cc585443be.jpg",
+    "static/media/banner2.png": "/easycase-app/static/media/banner2.10fb8652a5b7e3f2211d.png",
+    "static/media/banner3.png": "/easycase-app/static/media/banner3.10fb8652a5b7e3f2211d.png",
     "index.html": "/easycase-app/index.html",
-    "precache-manifest.4ff01fdf6a97cb184f24d0a504863cb4.js": "/easycase-app/precache-manifest.4ff01fdf6a97cb184f24d0a504863cb4.js",
-    "service-worker.js": "/easycase-app/service-worker.js",
-    "static/css/main.ec64b47a.chunk.css.map": "/easycase-app/static/css/main.ec64b47a.chunk.css.map",
-    "static/media/banner1.png": "/easycase-app/static/media/banner1.19175cd1.png",
-    "static/media/banner2.png": "/easycase-app/static/media/banner2.7c11d8ea.png",
-    "static/media/banner3.png": "/easycase-app/static/media/banner3.7c11d8ea.png",
-    "static/media/portrait1.jpg": "/easycase-app/static/media/portrait1.3fb4a934.jpg",
-    "static/media/portrait2.jpg": "/easycase-app/static/media/portrait2.38e0d57c.jpg",
-    "static/media/portrait3.jpg": "/easycase-app/static/media/portrait3.bdd41a4a.jpg",
-    "static/media/video2.mp4": "/easycase-app/static/media/video2.1bedf9d3.mp4",
-    "static/media/video3.mp4": "/easycase-app/static/media/video3.8cdfb9fa.mp4",
-    "static/media/video5.mp4": "/easycase-app/static/media/video5.3a04658e.mp4"
-  }
+    "main.ee51817d.css.map": "/easycase-app/static/css/main.ee51817d.css.map",
+    "main.db7c2002.js.map": "/easycase-app/static/js/main.db7c2002.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ee51817d.css",
+    "static/js/main.db7c2002.js"
+  ]
 }
