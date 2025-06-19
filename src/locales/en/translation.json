@@ -1,0 +1,11 @@
+{
+  "welcome": "Welcome to EasyCase!",
+  "language": "Language",
+  "ads": [
+    "Missed your flight? We turn that into cash.",
+    "Your delay, our case. Get compensated easily.",
+    "No stress. No fees. Just compensation."
+  ],
+  "sectors":["status", "eligibility", "about", "contact"],
+  "statusTitle":"Track Your Claim Status"
+}

@@ -6,6 +6,10 @@ import CardContent from "../ui/CardContent";
 import Button from "../ui/Button";
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 import { app } from "../firebase/firebaseConfig"; // adjust path if needed
+import { useTranslation } from 'react-i18next';
+
+
+
 
 const db = getFirestore(app);
 
@@ -29,7 +33,11 @@ const DURATIONS = [
   "60 days"
 ];
 
+
+
 export default function StatusSection() {
+  const { t } = useTranslation();
+
   const [ref, setRef] = useState("");
   const [status, setStatus] = useState(null);
   const scrollRef = useRef(null);
@@ -81,11 +89,13 @@ export default function StatusSection() {
     }
   };
 
+  //const statusTitle= t("statusTitle", { returnObjects: true })
+
   return (
     <section className="py-12 px-6 bg-neutral-400 from-white to-sky-100" id="status">
       <div className="max-w-5xl mx-auto text-center">
         <h2 className="text-3xl font-bold mb-4 text-gray-800">
-          <span role="img" aria-label="Bar chart">📊</span> Track Your Claim Status
+          <span role="img" aria-label="Bar chart">📊</span> {t("statusTitle")}
         </h2>
 
         {/* Description */}
@@ -94,6 +104,25 @@ export default function StatusSection() {
           <p className="text-gray-600">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam accumsan, justo at suscipit euismod,
             lacus urna sodales lacus, nec dapibus odio risus vitae magna. In hac habitasse platea dictumst.
+          </p>
+        </div>
+
+        {/* Status checker */}
+        <div className="bg-white shadow-md p-6 rounded-lg max-w-md mx-auto">
+          <h4 className="text-lg font-semibold mb-3 text-gray-800">
+            <span role="img" aria-label="Magnifying glass">🔍</span> Enter Your Reference Number
+          </h4>
+          <div className="flex gap-2 items-center flex-col sm:flex-row">
+            <Input
+              placeholder="e.g. REF123456"
+              value={ref}
+              onChange={(e) => setRef(e.target.value)}
+              className="flex-grow mb-2 sm:mb-0"
+            />
+            <Button onClick={handleCheckStatus}>Check</Button>
+          </div>
+          <p className="p-4 text-lg mb-2 mt-4">
+            Don't have a reference number yet? Fill out the questionnaire
           </p>
         </div>
 
@@ -122,21 +151,7 @@ export default function StatusSection() {
           </div>
         </div>
 
-        {/* Status checker */}
-        <div className="bg-white shadow-md p-6 rounded-lg max-w-md mx-auto">
-          <h4 className="text-lg font-semibold mb-3 text-gray-800">
-            <span role="img" aria-label="Magnifying glass">🔍</span> Enter Your Reference Number
-          </h4>
-          <div className="flex gap-2 items-center flex-col sm:flex-row">
-            <Input
-              placeholder="e.g. REF123456"
-              value={ref}
-              onChange={(e) => setRef(e.target.value)}
-              className="flex-grow mb-2 sm:mb-0"
-            />
-            <Button onClick={handleCheckStatus}>Check</Button>
-          </div>
-        </div>
+        
       </div>
     </section>
   );

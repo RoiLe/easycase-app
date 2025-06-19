@@ -5,7 +5,7 @@ import team3 from "../assets/images/portrait3.jpg";
 
 export default function AboutSection() {
   return (
-    <section className="py-12 bg-white text-center" id="about">
+    <section className="py-12 bg-neutral-400 text-center" id="about">
       <div className="max-w-5xl mx-auto px-4">
         <h2 className="text-3xl font-bold mb-4">Who Are We?</h2>
         <p className="text-gray-700 text-lg mb-8">

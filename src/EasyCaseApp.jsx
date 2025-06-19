@@ -11,19 +11,19 @@ import banner3 from "./assets/images/banner3.png";
 import video1 from "./assets/video/video5.mp4";
 import video2 from "./assets/video/video2.mp4";
 import video3 from "./assets/video/video3.mp4";
+import { useTranslation } from 'react-i18next';
+//import LanguageSelector from "./components/LanguageSelector";
 
 export default function EasyCaseApp() {
   const [adIndex, setAdIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const touchStartX = useRef(null);
 
+  const { t } = useTranslation();
+
   const adImages = [banner1, banner2, banner3];
   const adVideos = [video1, video2, video3];
-  const adTexts = [
-    "Missed your flight? We turn that into cash.",
-    "Your delay, our case. Get compensated easily.",
-    "No stress. No fees. Just compensation."
-  ];
+  const adTexts = t("ads", { returnObjects: true });
 
   useEffect(() => {
     const interval = setInterval(() => setAdIndex((i) => (i + 1) % adImages.length), 4000);
@@ -45,10 +45,11 @@ export default function EasyCaseApp() {
   return (
     <div className="bg-gradient-to-b from-sky-100 to-white min-h-screen flex flex-col text-center font-sans">
       <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} scrollToSection={scrollToSection} />
-      <AdBanner adVideos={adVideos} adImages={adImages} adIndex={adIndex} adTexts={adTexts} handleTouchStart={handleTouchStart} handleTouchEnd={handleTouchEnd} />
-      <AboutSection />
+      {/* <LanguageSelector /> */}
+      <AdBanner adVideos={adVideos} adImages={adImages} adIndex={adIndex} adTexts={adTexts} handleTouchStart={handleTouchStart} handleTouchEnd={handleTouchEnd} /> 
       <StatusSection />
       <EligibilityForm />
+      <AboutSection />
       <ContactSection />
       <footer className="p-4 bg-gray-100 text-center text-gray-500 text-sm">
         © {new Date().getFullYear()} easyCase. All rights reserved.

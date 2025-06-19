@@ -10,7 +10,7 @@ export default function AdBanner({
 }) {
   return (
     <section
-      className="relative flex flex-col-reverse md:flex-row items-center justify-center px-6 py-12 min-h-screen bg-black"
+      className="relative flex flex-col-reverse md:flex-row items-center justify-center px-6 py-12 min-h-[50vh] bg-black"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
